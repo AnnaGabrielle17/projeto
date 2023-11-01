@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using TMPro;
 using UnityEngine;
 
@@ -8,10 +9,14 @@ public class GameManager : MonoBehaviour
 
     public TextMeshProUGUI hud, msgVitoria;
     public int restantes;
+    public AudioClip clipMoeda, clipVitoria;
+
+    private AudioSource source;
     
     // Start is called before the first frame update
     void Start()
     {
+        TryGetComponent(out source);
         restantes = FindObjectsOfType<Moeda>().Length;
 
         hud.text = $"Moedas restantes:{restantes}";
@@ -21,10 +26,14 @@ public class GameManager : MonoBehaviour
     {
         restantes -= valor;
         hud.text = $"Moedas restantes:{restantes}";
+        source.PlayOneShot(clipMoeda);
 
         if (restantes <= 0)
         {
+
             msgVitoria.text = "Parabéns!";
+            source.Stop();
+            source.PlayOneShot(clipVitoria);
         }
     }
 

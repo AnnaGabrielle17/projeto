@@ -6,9 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
-    public int velocidade = 10;
-    private Rigidbody rb;
     public int forcaPulo = 7;
+    public int velocidade = 10;
+    
+    private Rigidbody rb;
+    private AudioSource source;
+    
+    
 
     public bool noChao = false;
     
@@ -16,6 +20,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         TryGetComponent(out rb);
+        TryGetComponent(out source);
 
     }
     
@@ -37,6 +42,8 @@ public class Player : MonoBehaviour
         rb.AddForce(new Vector3(h, 0, v) * velocidade * Time.deltaTime, ForceMode.Impulse);
         if (Input.GetKeyDown(KeyCode.Space) && noChao)
         {
+            source.Play();
+            
             rb.AddForce(Vector3.up * forcaPulo, ForceMode.Impulse);
             noChao = false;
         }
